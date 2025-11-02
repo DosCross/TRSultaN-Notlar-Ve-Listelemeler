@@ -1,137 +1,72 @@
-// === MENU AÇ/KAPA ===
-const menuToggle = document.getElementById("menu-toggle");
-const menuItems = document.querySelector(".menu-items");
-const menuButtons = document.querySelectorAll(".menu-btn");
+// Notları localStorage'dan al
+function getNotes() {
+  return JSON.parse(localStorage.getItem("notes") || "[]");
+}
 
-menuToggle.addEventListener("click", () => {
-  menuItems.classList.toggle("show");
-});
+// Notları kaydet
+function saveNotes(notes) {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}
 
-// === ALANLAR ===
-const noteTitle = document.getElementById("note-title");
-const noteContent = document.getElementById("note-content");
-const addBtn = document.getElementById("add-btn");
+// Notları ekranda göster
+function renderNotes() {
+  const container = document.getElementById("notesContainer");
+  container.innerHTML = "";
+  const notes = getNotes();
 
-const notesSection = document.getElementById("notes-section");
-const archiveSection = document.getElementById("archive-section");
-const trashSection = document.getElementById("trash-section");
+  if (notes.length === 0) {
+    container.innerHTML = "<p>Henüz not eklenmedi.</p>";
+    return;
+  }
 
-// === FIREBASE ===
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc
-} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+  notes.forEach((note, index) => {
+    const div = document.createElement("div");
+    div.className = "note";
+    div.innerHTML = `
+      <p>${note}</p>
+      <button data-index="${index}" class="deleteBtn">🗑️</button>
+    `;
+    container.appendChild(div);
+  });
 
-const db = window.db;
-const notesRef = collection(db, "notes");
-
-// === SAYFA YÜKLENDİĞİNDE NOTLARI GETİR ===
-window.addEventListener("DOMContentLoaded", async () => {
-  await loadNotes();
-});
-
-// === NOT EKLE ===
-addBtn.addEventListener("click", async () => {
-  const title = noteTitle.value.trim();
-  const content = noteContent.value.trim();
-
-  if (!title && !content) return alert("Boş not eklenemez!");
-
-  const newNote = { title, content, status: "active", created: Date.now() };
-
-  await addDoc(notesRef, newNote);
-  noteTitle.value = "";
-  noteContent.value = "";
-
-  await loadNotes();
-});
-
-// === NOTLARI YÜKLE ===
-async function loadNotes() {
-  notesSection.innerHTML = "";
-  archiveSection.innerHTML = "";
-  trashSection.innerHTML = "";
-
-  const querySnapshot = await getDocs(notesRef);
-  querySnapshot.forEach((docSnap) => {
-    const note = docSnap.data();
-    const id = docSnap.id;
-    const noteElement = createNoteElement(id, note);
-    if (note.status === "archived") archiveSection.appendChild(noteElement);
-    else if (note.status === "trashed") trashSection.appendChild(noteElement);
-    else notesSection.appendChild(noteElement);
+  // Silme butonlarına olay bağla
+  document.querySelectorAll(".deleteBtn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const index = e.target.dataset.index;
+      const notes = getNotes();
+      notes.splice(index, 1);
+      saveNotes(notes);
+      renderNotes();
+    });
   });
 }
 
-// === NOT KARTI OLUŞTUR ===
-function createNoteElement(id, note) {
-  const div = document.createElement("div");
-  div.classList.add("note");
-  div.innerHTML = `
-    <h3>${note.title || "Başlıksız"}</h3>
-    <p>${note.content}</p>
-    <div class="note-buttons">
-      ${note.status !== "archived" && note.status !== "trashed" ? `
-        <button onclick="archiveNote('${id}')">📦 Arşivle</button>
-        <button onclick="deleteNote('${id}')">🗑️ Sil</button>
-      ` : ""}
-      ${note.status === "archived" ? `
-        <button onclick="restoreNote('${id}')">♻️ Geri Al</button>
-      ` : ""}
-      ${note.status === "trashed" ? `
-        <button onclick="restoreNote('${id}')">♻️ Geri Al</button>
-        <button onclick="permanentDelete('${id}')">❌ Kalıcı Sil</button>
-      ` : ""}
-    </div>
-  `;
-  return div;
-}
+// Yeni not ekle
+document.getElementById("addNoteBtn").addEventListener("click", () => {
+  const textarea = document.getElementById("noteInput");
+  const text = textarea.value.trim();
+  if (!text) return alert("Lütfen bir not yazın!");
 
-// === NOTU ARŞİVLE ===
-window.archiveNote = async (id) => {
-  const ref = doc(db, "notes", id);
-  await updateDoc(ref, { status: "archived" });
-  await loadNotes();
-};
-
-// === NOTU ÇÖP KUTUSUNA TAŞI ===
-window.deleteNote = async (id) => {
-  const ref = doc(db, "notes", id);
-  await updateDoc(ref, { status: "trashed" });
-  await loadNotes();
-};
-
-// === NOTU GERİ AL ===
-window.restoreNote = async (id) => {
-  const ref = doc(db, "notes", id);
-  await updateDoc(ref, { status: "active" });
-  await loadNotes();
-};
-
-// === NOTU KALICI SİL ===
-window.permanentDelete = async (id) => {
-  const ref = doc(db, "notes", id);
-  await deleteDoc(ref);
-  await loadNotes();
-};
-
-// === MENÜ BUTONLARI ARASINDA GEÇİŞ ===
-menuButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const section = btn.getAttribute("data-section");
-    notesSection.classList.add("hidden");
-    archiveSection.classList.add("hidden");
-    trashSection.classList.add("hidden");
-
-    if (section === "notes") notesSection.classList.remove("hidden");
-    else if (section === "archive") archiveSection.classList.remove("hidden");
-    else if (section === "trash") trashSection.classList.remove("hidden");
-
-    menuItems.classList.remove("show");
-  });
+  const notes = getNotes();
+  notes.push(text);
+  saveNotes(notes);
+  textarea.value = "";
+  renderNotes();
 });
+
+// Menü aç/kapa
+document.getElementById("menuBtn").addEventListener("click", () => {
+  const menu = document.getElementById("menu");
+  menu.classList.toggle("hidden");
+});
+
+// Tüm notları sil
+document.getElementById("clearNotes").addEventListener("click", () => {
+  if (confirm("Tüm notlar silinecek, emin misiniz?")) {
+    localStorage.removeItem("notes");
+    renderNotes();
+  }
+});
+
+// Sayfa yüklenince notları göster
+document.addEventListener("DOMContentLoaded", renderNotes);
