@@ -1,72 +1,67 @@
-// Notları localStorage'dan al
+// LocalStorage işlemleri
 function getNotes() {
   return JSON.parse(localStorage.getItem("notes") || "[]");
 }
 
-// Notları kaydet
 function saveNotes(notes) {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
 
-// Notları ekranda göster
-function renderNotes() {
+// Notları oluşturma
+function renderNotes(filter = "") {
   const container = document.getElementById("notesContainer");
   container.innerHTML = "";
   const notes = getNotes();
 
-  if (notes.length === 0) {
-    container.innerHTML = "<p>Henüz not eklenmedi.</p>";
+  const filtered = notes.filter((note) =>
+    note.text.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  if (filtered.length === 0) {
+    container.innerHTML = "<p>Hiç not yok.</p>";
     return;
   }
 
-  notes.forEach((note, index) => {
+  filtered.forEach((note, index) => {
     const div = document.createElement("div");
     div.className = "note";
+    div.style.background = note.color;
     div.innerHTML = `
-      <p>${note}</p>
-      <button data-index="${index}" class="deleteBtn">🗑️</button>
+      <button data-index="${index}">🗑️</button>
+      <p>${note.text}</p>
     `;
     container.appendChild(div);
   });
 
-  // Silme butonlarına olay bağla
-  document.querySelectorAll(".deleteBtn").forEach((btn) => {
+  document.querySelectorAll(".note button").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const index = e.target.dataset.index;
       const notes = getNotes();
       notes.splice(index, 1);
       saveNotes(notes);
-      renderNotes();
+      renderNotes(document.getElementById("searchInput").value);
     });
   });
 }
 
-// Yeni not ekle
+// Not ekleme
 document.getElementById("addNoteBtn").addEventListener("click", () => {
-  const textarea = document.getElementById("noteInput");
-  const text = textarea.value.trim();
+  const text = document.getElementById("noteInput").value.trim();
+  const color = document.getElementById("colorPicker").value;
   if (!text) return alert("Lütfen bir not yazın!");
 
   const notes = getNotes();
-  notes.push(text);
+  notes.push({ text, color });
   saveNotes(notes);
-  textarea.value = "";
-  renderNotes();
+
+  document.getElementById("noteInput").value = "";
+  renderNotes(document.getElementById("searchInput").value);
 });
 
-// Menü aç/kapa
-document.getElementById("menuBtn").addEventListener("click", () => {
-  const menu = document.getElementById("menu");
-  menu.classList.toggle("hidden");
+// Arama filtresi
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  renderNotes(e.target.value);
 });
 
-// Tüm notları sil
-document.getElementById("clearNotes").addEventListener("click", () => {
-  if (confirm("Tüm notlar silinecek, emin misiniz?")) {
-    localStorage.removeItem("notes");
-    renderNotes();
-  }
-});
-
-// Sayfa yüklenince notları göster
-document.addEventListener("DOMContentLoaded", renderNotes);
+// Sayfa açıldığında notları yükle
+document.addEventListener("DOMContentLoaded", () => renderNotes());
