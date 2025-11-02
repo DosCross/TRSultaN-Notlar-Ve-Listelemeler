@@ -1,40 +1,92 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TRSultaN Notlar Sayfası</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>🟥 TRSultaN Notlar Sayfası 🖤</h1>
-    <input type="text" id="search" placeholder="Notlarda ara..." />
+  <header class="topbar">
+    <div class="brand">TRSultaN Notlar Sayfası</div>
+    <div class="search-wrap">
+      <input id="search" placeholder="Notlarda ara..." />
+    </div>
   </header>
 
-  <div class="container">
-    <div class="add-note">
-      <input type="text" id="note-title" placeholder="Başlık..." />
-      <textarea id="note-content" placeholder="Not içeriği..."></textarea>
-      <div class="controls">
-        <input type="color" id="note-color" value="#ff3b3b" />
-        <button id="add-note-btn">Not Ekle</button>
+  <aside class="menu" id="menu">
+    <button id="menuToggle" class="menu-toggle" aria-label="Menüyü aç">☰</button>
+    <nav class="menu-panel" id="menuPanel" aria-hidden="true">
+      <button class="menu-item active" data-section="notes">Notlar</button>
+      <button class="menu-item" data-section="pinned">Sabitlenenler</button>
+      <button class="menu-item" data-section="archive">Arşiv</button>
+      <button class="menu-item" data-section="trash">Çöp Kutusu</button>
+      <div class="menu-divider"></div>
+      <div class="menu-status">Durum: <span id="status">bağlanıyor...</span></div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <section class="creator">
+      <input id="noteTitle" placeholder="Başlık (opsiyonel)" />
+      <div class="creator-row">
+        <textarea id="noteText" placeholder="Notunu yaz..."></textarea>
+        <div class="creator-side">
+          <div class="color-palette" id="colorPalette">
+            <!-- renk düğmeleri JS ile dolduruyor -->
+          </div>
+          <label class="pin-label"><input type="checkbox" id="pinCheckbox"/> Sabitle</label>
+          <div class="creator-actions">
+            <button id="saveBtn" class="btn primary">Kaydet</button>
+            <button id="clearBtn" class="btn">Temizle</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-wrap">
+      <div id="notesGrid" class="notes-grid" data-section="notes"></div>
+      <div id="pinnedGrid" class="notes-grid hidden" data-section="pinned"></div>
+      <div id="archiveGrid" class="notes-grid hidden" data-section="archive"></div>
+      <div id="trashGrid" class="notes-grid hidden" data-section="trash"></div>
+    </section>
+  </main>
+
+  <!-- Edit modal -->
+  <div id="editModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <h3>Düzenle</h3>
+      <input id="editTitle" placeholder="Başlık (ops.)" />
+      <textarea id="editText"></textarea>
+      <div class="modal-actions">
+        <select id="editColor"></select>
+        <label><input type="checkbox" id="editPin"/> Sabitle</label>
+        <button id="saveEdit" class="btn primary">Kaydet</button>
+        <button id="cancelEdit" class="btn">İptal</button>
       </div>
     </div>
-
-    <div id="notes-container"></div>
   </div>
 
-  <div class="menu">
-    <button id="menu-toggle">☰</button>
-    <div class="menu-content">
-      <button class="menu-btn" id="all-notes">📝 Notlar</button>
-      <button class="menu-btn" id="pinned-notes">📌 Sabitlenenler</button>
-      <button class="menu-btn" id="archived-notes">📦 Arşiv</button>
-      <button class="menu-btn" id="trash-notes">🗑️ Çöp Kutusu</button>
-    </div>
-  </div>
+  <template id="noteTpl">
+    <article class="note">
+      <header class="note-head">
+        <h4 class="note-title"></h4>
+        <div class="note-actions">
+          <button class="action edit" title="Düzenle"></button>
+          <button class="action pin" title="Sabitle"></button>
+          <button class="action archive" title="Arşivle"></button>
+          <button class="action trash" title="Çöp"></button>
+        </div>
+      </header>
+      <div class="note-body"></div>
+      <footer class="note-foot">
+        <small class="note-date"></small>
+        <div class="note-foot-actions"></div>
+      </footer>
+    </article>
+  </template>
 
-  <script src="script.js"></script>
+  <!-- Module script (Firebase + app logic) -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
