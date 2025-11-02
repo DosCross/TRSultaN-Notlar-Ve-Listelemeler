@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TRSultaN Notlar Sayfası</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"> <!-- ✅ BURASI -->
 </head>
 <body>
   <header>
@@ -32,26 +32,7 @@
     <section id="trash-section" class="grid hidden"></section>
   </main>
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB1cFxk1JjLXlrNEK5MyqPOZxZEqsFMx4Y",
-      authDomain: "trsultan-keep.firebaseapp.com",
-      projectId: "trsultan-keep",
-      storageBucket: "trsultan-keep.firebasestorage.app",
-      messagingSenderId: "142103713041",
-      appId: "1:142103713041:web:0faf05bc7f71d9081b28b0",
-      measurementId: "G-QE8FVDQRVC"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    window.db = db;
-  </script>
-
-  <script src="script.js"></script>
+  <!-- ✅ JS dosyasını doğru şekilde bağla -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
