@@ -1,137 +1,115 @@
-// === MENU AÇ/KAPA ===
-const menuToggle = document.getElementById("menu-toggle");
-const menuItems = document.querySelector(".menu-items");
-const menuButtons = document.querySelectorAll(".menu-btn");
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
 
-menuToggle.addEventListener("click", () => {
-  menuItems.classList.toggle("show");
-});
-
-// === ALANLAR ===
+const noteContainer = document.getElementById("notes-container");
+const addNoteBtn = document.getElementById("add-note-btn");
 const noteTitle = document.getElementById("note-title");
 const noteContent = document.getElementById("note-content");
-const addBtn = document.getElementById("add-btn");
+const noteColor = document.getElementById("note-color");
+const searchInput = document.getElementById("search");
+const menuToggle = document.getElementById("menu-toggle");
+const menuContent = document.querySelector(".menu-content");
 
-const notesSection = document.getElementById("notes-section");
-const archiveSection = document.getElementById("archive-section");
-const trashSection = document.getElementById("trash-section");
+let currentFilter = "all";
 
-// === FIREBASE ===
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc
-} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+function saveNotes() {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}
 
-const db = window.db;
-const notesRef = collection(db, "notes");
+function renderNotes() {
+  noteContainer.innerHTML = "";
 
-// === SAYFA YÜKLENDİĞİNDE NOTLARI GETİR ===
-window.addEventListener("DOMContentLoaded", async () => {
-  await loadNotes();
-});
+  let filteredNotes = notes.filter(note => {
+    if (currentFilter === "archived") return note.archived;
+    if (currentFilter === "trash") return note.trash;
+    if (currentFilter === "pinned") return note.pinned && !note.trash;
+    return !note.archived && !note.trash;
+  });
 
-// === NOT EKLE ===
-addBtn.addEventListener("click", async () => {
-  const title = noteTitle.value.trim();
-  const content = noteContent.value.trim();
+  const searchTerm = searchInput.value.toLowerCase();
+  filteredNotes = filteredNotes.filter(
+    n =>
+      n.title.toLowerCase().includes(searchTerm) ||
+      n.content.toLowerCase().includes(searchTerm)
+  );
 
-  if (!title && !content) return alert("Boş not eklenemez!");
+  filteredNotes.forEach((note, index) => {
+    const div = document.createElement("div");
+    div.className = "note";
+    div.style.borderLeftColor = note.color || "#900";
+    div.innerHTML = `
+      <div class="note-title">${note.title}</div>
+      <div class="note-content">${note.content}</div>
+      <div class="note-buttons">
+        <button onclick="togglePin(${index})">📌</button>
+        <button onclick="archiveNote(${index})">📦</button>
+        <button onclick="deleteNote(${index})">🗑️</button>
+      </div>
+    `;
+    noteContainer.appendChild(div);
+  });
+}
 
-  const newNote = { title, content, status: "active", created: Date.now() };
-
-  await addDoc(notesRef, newNote);
+addNoteBtn.addEventListener("click", () => {
+  if (!noteContent.value.trim()) return alert("Not içeriği boş olamaz!");
+  const note = {
+    title: noteTitle.value.trim(),
+    content: noteContent.value.trim(),
+    color: noteColor.value,
+    pinned: false,
+    archived: false,
+    trash: false,
+    date: new Date().toISOString(),
+  };
+  notes.push(note);
+  saveNotes();
   noteTitle.value = "";
   noteContent.value = "";
-
-  await loadNotes();
+  renderNotes();
 });
 
-// === NOTLARI YÜKLE ===
-async function loadNotes() {
-  notesSection.innerHTML = "";
-  archiveSection.innerHTML = "";
-  trashSection.innerHTML = "";
-
-  const querySnapshot = await getDocs(notesRef);
-  querySnapshot.forEach((docSnap) => {
-    const note = docSnap.data();
-    const id = docSnap.id;
-    const noteElement = createNoteElement(id, note);
-    if (note.status === "archived") archiveSection.appendChild(noteElement);
-    else if (note.status === "trashed") trashSection.appendChild(noteElement);
-    else notesSection.appendChild(noteElement);
-  });
+function togglePin(index) {
+  notes[index].pinned = !notes[index].pinned;
+  saveNotes();
+  renderNotes();
 }
 
-// === NOT KARTI OLUŞTUR ===
-function createNoteElement(id, note) {
-  const div = document.createElement("div");
-  div.classList.add("note");
-  div.innerHTML = `
-    <h3>${note.title || "Başlıksız"}</h3>
-    <p>${note.content}</p>
-    <div class="note-buttons">
-      ${note.status !== "archived" && note.status !== "trashed" ? `
-        <button onclick="archiveNote('${id}')">📦 Arşivle</button>
-        <button onclick="deleteNote('${id}')">🗑️ Sil</button>
-      ` : ""}
-      ${note.status === "archived" ? `
-        <button onclick="restoreNote('${id}')">♻️ Geri Al</button>
-      ` : ""}
-      ${note.status === "trashed" ? `
-        <button onclick="restoreNote('${id}')">♻️ Geri Al</button>
-        <button onclick="permanentDelete('${id}')">❌ Kalıcı Sil</button>
-      ` : ""}
-    </div>
-  `;
-  return div;
+function archiveNote(index) {
+  notes[index].archived = !notes[index].archived;
+  saveNotes();
+  renderNotes();
 }
 
-// === NOTU ARŞİVLE ===
-window.archiveNote = async (id) => {
-  const ref = doc(db, "notes", id);
-  await updateDoc(ref, { status: "archived" });
-  await loadNotes();
-};
+function deleteNote(index) {
+  if (notes[index].trash) {
+    notes.splice(index, 1);
+  } else {
+    notes[index].trash = true;
+  }
+  saveNotes();
+  renderNotes();
+}
 
-// === NOTU ÇÖP KUTUSUNA TAŞI ===
-window.deleteNote = async (id) => {
-  const ref = doc(db, "notes", id);
-  await updateDoc(ref, { status: "trashed" });
-  await loadNotes();
-};
+searchInput.addEventListener("input", renderNotes);
 
-// === NOTU GERİ AL ===
-window.restoreNote = async (id) => {
-  const ref = doc(db, "notes", id);
-  await updateDoc(ref, { status: "active" });
-  await loadNotes();
-};
-
-// === NOTU KALICI SİL ===
-window.permanentDelete = async (id) => {
-  const ref = doc(db, "notes", id);
-  await deleteDoc(ref);
-  await loadNotes();
-};
-
-// === MENÜ BUTONLARI ARASINDA GEÇİŞ ===
-menuButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const section = btn.getAttribute("data-section");
-    notesSection.classList.add("hidden");
-    archiveSection.classList.add("hidden");
-    trashSection.classList.add("hidden");
-
-    if (section === "notes") notesSection.classList.remove("hidden");
-    else if (section === "archive") archiveSection.classList.remove("hidden");
-    else if (section === "trash") trashSection.classList.remove("hidden");
-
-    menuItems.classList.remove("show");
-  });
+menuToggle.addEventListener("click", () => {
+  menuContent.classList.toggle("show");
 });
+
+document.getElementById("all-notes").addEventListener("click", () => {
+  currentFilter = "all";
+  renderNotes();
+});
+document.getElementById("archived-notes").addEventListener("click", () => {
+  currentFilter = "archived";
+  renderNotes();
+});
+document.getElementById("trash-notes").addEventListener("click", () => {
+  currentFilter = "trash";
+  renderNotes();
+});
+document.getElementById("pinned-notes").addEventListener("click", () => {
+  currentFilter = "pinned";
+  renderNotes();
+});
+
+renderNotes();
