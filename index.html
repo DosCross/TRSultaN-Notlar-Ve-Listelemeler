@@ -3,33 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notlarım</title>
+  <title>TRSultaN Notlar Sayfası</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Notlarım</h1>
-    <input type="text" id="searchInput" placeholder="Ara..." />
+    <h1>🟥 TRSultaN Notlar Sayfası 🖤</h1>
   </header>
 
+  <aside class="menu">
+    <button id="menu-toggle">☰ Menü</button>
+    <div class="menu-items">
+      <button class="menu-btn" data-section="notes">📒 Notlar</button>
+      <button class="menu-btn" data-section="archive">🗂️ Arşiv</button>
+      <button class="menu-btn" data-section="trash">🗑️ Çöp Kutusu</button>
+    </div>
+  </aside>
+
   <main>
-    <section class="add-note">
-      <textarea id="noteInput" placeholder="Not yaz..."></textarea>
-      <div class="controls">
-        <select id="colorPicker">
-          <option value="#fff9c4">Sarı</option>
-          <option value="#c8e6c9">Yeşil</option>
-          <option value="#bbdefb">Mavi</option>
-          <option value="#ffcdd2">Kırmızı</option>
-          <option value="#f0f0f0">Gri</option>
-        </select>
-        <button id="addNoteBtn">Ekle</button>
-      </div>
+    <section id="add-note">
+      <input type="text" id="note-title" placeholder="Not başlığı..." />
+      <textarea id="note-content" placeholder="Bir şeyler yaz..."></textarea>
+      <button id="add-btn">➕ Not Ekle</button>
     </section>
 
-    <section id="notesContainer" class="notes-grid"></section>
+    <section id="notes-section" class="grid"></section>
+    <section id="archive-section" class="grid hidden"></section>
+    <section id="trash-section" class="grid hidden"></section>
   </main>
 
-  <script src="script.js" defer></script>
+  <!-- Firebase ve JS -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
