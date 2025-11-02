@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRSultaN Notlar Sayfası</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🟥 TRSultaN Notlar Sayfası 🖤</h1>
+  </header>
+
+  <aside class="menu">
+    <button id="menu-toggle">☰ Menü</button>
+    <div class="menu-items">
+      <button class="menu-btn" data-section="notes">📒 Notlar</button>
+      <button class="menu-btn" data-section="archive">🗂️ Arşiv</button>
+      <button class="menu-btn" data-section="trash">🗑️ Çöp Kutusu</button>
+    </div>
+  </aside>
+
+  <main>
+    <section id="add-note">
+      <input type="text" id="note-title" placeholder="Not başlığı...">
+      <textarea id="note-content" placeholder="Bir şeyler yaz..."></textarea>
+      <button id="add-btn">➕ Not Ekle</button>
+    </section>
+
+    <section id="notes-section" class="grid"></section>
+    <section id="archive-section" class="grid hidden"></section>
+    <section id="trash-section" class="grid hidden"></section>
+  </main>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB1cFxk1JjLXlrNEK5MyqPOZxZEqsFMx4Y",
+      authDomain: "trsultan-keep.firebaseapp.com",
+      projectId: "trsultan-keep",
+      storageBucket: "trsultan-keep.firebasestorage.app",
+      messagingSenderId: "142103713041",
+      appId: "1:142103713041:web:0faf05bc7f71d9081b28b0",
+      measurementId: "G-QE8FVDQRVC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
