@@ -1,182 +1,98 @@
-/* === GENEL AYARLAR === */
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Poppins", sans-serif;
-  background-color: #0d0d0d;
-  color: #fff;
+  font-family: "Segoe UI", sans-serif;
   margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  background: #f2f2f2;
 }
 
-/* === BAŞLIK === */
 header {
-  background: linear-gradient(90deg, #d00000, #660000);
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  letter-spacing: 2px;
-  box-shadow: 0 3px 8px rgba(255, 0, 0, 0.3);
-}
-
-/* === MENÜ === */
-.menu {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: 1000;
-}
-
-#menu-toggle {
-  background-color: #d00000;
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 50px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.4);
-}
-
-#menu-toggle:hover {
-  background-color: #ff1e1e;
-  transform: scale(1.05);
-}
-
-.menu-items {
-  display: none;
-  position: absolute;
-  bottom: 60px;
-  left: 0;
-  background-color: #1a1a1a;
-  border: 2px solid #d00000;
-  border-radius: 12px;
-  padding: 8px;
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-}
-
-.menu-items.show {
-  display: block;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.menu-btn {
-  display: block;
-  width: 100%;
-  color: #fff;
-  background: transparent;
-  border: none;
-  text-align: left;
-  padding: 8px 10px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.menu-btn:hover {
-  background-color: #d00000;
-}
-
-/* === NOT EKLEME ALANI === */
-#add-note {
-  background-color: #1a1a1a;
-  margin: 30px auto;
-  padding: 15px;
-  border-radius: 12px;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
-}
-
-#note-title,
-#note-content {
-  background-color: #0d0d0d;
-  color: white;
-  border: 1px solid #d00000;
-  border-radius: 8px;
-  padding: 10px;
-  resize: none;
-}
-
-#add-btn {
-  background-color: #d00000;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-#add-btn:hover {
-  background-color: #ff1e1e;
-}
-
-/* === NOT KARTLARI === */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 15px;
-  margin: 20px;
-}
-
-.note {
-  background-color: #1a1a1a;
-  border: 1px solid #d00000;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 2px 8px rgba(255, 0, 0, 0.2);
-  transition: transform 0.2s;
-  word-wrap: break-word;
-}
-
-.note:hover {
-  transform: translateY(-5px);
-}
-
-.note h3 {
-  color: #ff4040;
-  margin-bottom: 8px;
-}
-
-.note p {
-  font-size: 14px;
-}
-
-.note-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
-}
-
-.note-buttons button {
-  background-color: #d00000;
+  align-items: center;
+  background: #4a90e2;
   color: white;
+  padding: 10px 20px;
+}
+
+#menuBtn {
+  background: white;
+  color: #4a90e2;
   border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 12px;
-  transition: 0.2s;
 }
 
-.note-buttons button:hover {
-  background-color: #ff1e1e;
+nav {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 20px;
 }
 
-/* === GİZLE === */
 .hidden {
   display: none;
 }
 
-/* === ANİMASYON === */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.add-note {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 20px;
+}
+
+#noteInput {
+  resize: vertical;
+  min-height: 80px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+#addNoteBtn {
+  margin-top: 10px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#addNoteBtn:hover {
+  background: #357abd;
+}
+
+.notes {
+  display: grid;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+
+.note {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.note button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.note button:hover {
+  color: red;
 }
