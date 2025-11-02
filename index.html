@@ -3,26 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Not Uygulaması</title>
+  <title>Notlarım</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Not Uygulaması</h1>
-    <button id="menuBtn">☰ Menü</button>
+    <h1>Notlarım</h1>
+    <input type="text" id="searchInput" placeholder="Ara..." />
   </header>
 
-  <nav id="menu" class="hidden">
-    <button id="clearNotes">Tüm Notları Sil</button>
-  </nav>
-
   <main>
-    <div class="add-note">
-      <textarea id="noteInput" placeholder="Yeni notunuzu buraya yazın..."></textarea>
-      <button id="addNoteBtn">Not Ekle</button>
-    </div>
+    <section class="add-note">
+      <textarea id="noteInput" placeholder="Not yaz..."></textarea>
+      <div class="controls">
+        <select id="colorPicker">
+          <option value="#fff9c4">Sarı</option>
+          <option value="#c8e6c9">Yeşil</option>
+          <option value="#bbdefb">Mavi</option>
+          <option value="#ffcdd2">Kırmızı</option>
+          <option value="#f0f0f0">Gri</option>
+        </select>
+        <button id="addNoteBtn">Ekle</button>
+      </div>
+    </section>
 
-    <div id="notesContainer" class="notes"></div>
+    <section id="notesContainer" class="notes-grid"></section>
   </main>
 
   <script src="script.js" defer></script>
