@@ -5,142 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
-    <title>Profil Ayarları - TRSultaN Not ve Yardimci</title>
+    <title>Kayıt Ol - TRSultaN Not ve Yardimci</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <div class="dashboard-container">
-        <!-- Sidebar Menu -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>Menü</h2>
-                <button class="close-sidebar" id="closeSidebar">✕</button>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item">
-                    <span class="nav-icon">🏠</span>
-                    <span class="nav-text">Ana Sayfa</span>
-                </a>
-                <a href="notes.html" class="nav-item">
-                    <span class="nav-icon">📝</span>
-                    <span class="nav-text">Not Tutma</span>
-                </a>
-            </nav>
-        </aside>
+    <!-- Theme Toggle Button -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Tema Değiştir">
+        <span class="theme-icon">🌙</span>
+    </button>
 
-        <!-- Overlay -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <header class="dashboard-header">
-            <div class="header-content">
-                <div class="header-left">
-                    <button class="menu-toggle" id="menuToggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <h1>Profil Ayarları</h1>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h1>Kayıt Ol</h1>
+            <p class="subtitle">TRSultaN Not ve Yardimci sistemine katılın</p>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="name">Ad Soyad</label>
+                    <input type="text" id="name" name="name" required placeholder="Adınız Soyadınız">
                 </div>
-                <div class="user-info">
-                    <button id="themeToggle" class="theme-toggle theme-toggle-header" aria-label="Tema Değiştir">
-                        <span class="theme-icon">🌙</span>
-                    </button>
-                    <div class="user-profile">
-                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=8b0000&color=fff&size=40" alt="Profil" class="avatar">
-                        <span id="userName">Kullanıcı</span>
-                    </div>
-                    <div class="profile-dropdown">
-                        <button id="profileBtn" class="btn btn-profile">Profil Ayarları ▼</button>
-                        <div id="dropdownMenu" class="dropdown-menu">
-                            <a href="profile.html" class="dropdown-item">
-                                <span class="icon">👤</span> Kullanıcı Adı Değiştir
-                            </a>
-                            <a href="profile.html#password" class="dropdown-item">
-                                <span class="icon">🔒</span> Şifre Değiştir
-                            </a>
-                            <a href="profile.html#avatar" class="dropdown-item">
-                                <span class="icon">📷</span> Profil Fotoğrafı
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <button id="logoutBtn" class="dropdown-item logout-btn">
-                                <span class="icon">🚪</span> Çıkış Yap
-                            </button>
-                        </div>
-                    </div>
+                
+                <div class="form-group">
+                    <label for="email">E-posta</label>
+                    <input type="email" id="email" name="email" required placeholder="ornek@email.com">
                 </div>
+                
+                <div class="form-group">
+                    <label for="password">Şifre</label>
+                    <input type="password" id="password" name="password" required placeholder="En az 6 karakter">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Şifre Tekrar</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Şifrenizi tekrar girin">
+                </div>
+                
+                <div id="errorMessage" class="error-message"></div>
+                <div id="successMessage" class="success-message"></div>
+                
+                <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Zaten hesabınız var mı? <a href="index.html">Giriş Yap</a></p>
             </div>
-        </header>
-        
-        <main class="dashboard-main">
-            <div class="profile-container">
-                <h2>Profil Ayarları</h2>
-                
-                <!-- Avatar Section -->
-                <div class="profile-section" id="avatar">
-                    <h3>Profil Fotoğrafı</h3>
-                    <div class="avatar-section">
-                        <img id="profileAvatar" src="https://ui-avatars.com/api/?name=User&background=8b0000&color=fff&size=120" alt="Profil" class="avatar-large">
-                        <div class="avatar-colors">
-                            <p>Avatar rengini seçin:</p>
-                            <div class="color-options">
-                                <button class="color-btn" data-color="8b0000" style="background: #8b0000;"></button>
-                                <button class="color-btn" data-color="c41e3a" style="background: #c41e3a;"></button>
-                                <button class="color-btn" data-color="667eea" style="background: #667eea;"></button>
-                                <button class="color-btn" data-color="764ba2" style="background: #764ba2;"></button>
-                                <button class="color-btn" data-color="f093fb" style="background: #f093fb;"></button>
-                                <button class="color-btn" data-color="4facfe" style="background: #4facfe;"></button>
-                                <button class="color-btn" data-color="43e97b" style="background: #43e97b;"></button>
-                                <button class="color-btn" data-color="fa709a" style="background: #fa709a;"></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Username Section -->
-                <div class="profile-section">
-                    <h3>Kullanıcı Adı</h3>
-                    <div id="nameMessage" class="message"></div>
-                    <form id="nameForm">
-                        <div class="form-group">
-                            <label for="newName">Yeni Kullanıcı Adı</label>
-                            <input type="text" id="newName" name="newName" required placeholder="Yeni adınız">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Güncelle</button>
-                    </form>
-                </div>
-                
-                <!-- Password Section -->
-                <div class="profile-section" id="password">
-                    <h3>Şifre Değiştir</h3>
-                    <div id="passwordMessage" class="message"></div>
-                    <form id="passwordForm">
-                        <div class="form-group">
-                            <label for="currentPassword">Mevcut Şifre</label>
-                            <input type="password" id="currentPassword" name="currentPassword" required placeholder="Mevcut şifreniz">
-                        </div>
-                        <div class="form-group">
-                            <label for="newPassword">Yeni Şifre</label>
-                            <input type="password" id="newPassword" name="newPassword" required placeholder="En az 6 karakter">
-                        </div>
-                        <div class="form-group">
-                            <label for="confirmNewPassword">Yeni Şifre Tekrar</label>
-                            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required placeholder="Yeni şifrenizi tekrar girin">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Şifreyi Güncelle</button>
-                    </form>
-                </div>
-                
-                <!-- Back Button -->
-                <div style="margin-top: 30px;">
-                    <a href="dashboard.html" class="btn btn-secondary">Ana Sayfaya Dön</a>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
     
     <script type="module" src="./theme.js"></script>
-    <script type="module" src="./profile.js"></script>
+    <script type="module" src="./auth.js"></script>
 </body>
 
 </html>
