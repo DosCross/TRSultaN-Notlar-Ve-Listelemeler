@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>Not Tutma - TRSultaN Not ve Yardimci</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Menu -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Not Menüsü</h2>
+                <button class="close-sidebar" id="closeSidebar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="nav-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Ana Sayfa</span>
+                </a>
+                <a href="notes.html" class="nav-item active">
+                    <span class="nav-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Not Tutma</span>
+                </a>
+                <a href="#archive" class="nav-item" data-view="archive">
+                    <span class="nav-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                            <rect x="1" y="3" width="22" height="5"></rect>
+                            <line x1="10" y1="12" x2="14" y2="12"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Arşiv</span>
+                </a>
+                <a href="#trash" class="nav-item" data-view="trash">
+                    <span class="nav-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Çöp Kutusu</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <h1 id="pageTitle">Not Tutma</h1>
+                </div>
+                <div class="user-info">
+                    <button id="themeToggle" class="theme-toggle theme-toggle-header" aria-label="Tema Değiştir">
+                        <svg class="theme-icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="theme-icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div class="user-profile">
+                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=8b0000&color=fff&size=40" alt="Profil" class="avatar">
+                        <span id="userName">Kullanıcı</span>
+                    </div>
+                    <div class="profile-dropdown">
+                        <button id="profileBtn" class="btn btn-profile" aria-label="Profil Ayarları">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2-5.2l-4.2 4.2m0 6l4.2 4.2"></path>
+                            </svg>
+                        </button>
+                        <div id="dropdownMenu" class="dropdown-menu">
+                            <a href="profile.html" class="dropdown-item">
+                                <span class="icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </span> Kullanıcı Adı Değiştir
+                            </a>
+                            <a href="profile.html#password" class="dropdown-item">
+                                <span class="icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </span> Şifre Değiştir
+                            </a>
+                            <a href="profile.html#avatar" class="dropdown-item">
+                                <span class="icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                </span> Profil Fotoğrafı
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <button id="logoutBtn" class="dropdown-item logout-btn">
+                                <span class="icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                </span> Çıkış Yap
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <main class="dashboard-main notes-main">
+            <!-- Not Ekleme Formu -->
+            <div class="note-input-container" id="noteInputContainer">
+                <div class="note-input-compact" id="noteInputCompact">
+                    <input type="text" placeholder="Not al..." id="quickNoteInput">
+                </div>
+                <div class="note-input-expanded" id="noteInputExpanded" style="display: none;">
+                    <input type="text" placeholder="Başlık" id="noteTitle">
+                    <textarea placeholder="Not al..." id="noteContent" rows="3"></textarea>
+                    <div class="note-colors">
+                        <button class="color-option" data-color="default" style="background: var(--bg-primary);"></button>
+                        <button class="color-option" data-color="red" style="background: #f28b82;"></button>
+                        <button class="color-option" data-color="orange" style="background: #fbbc04;"></button>
+                        <button class="color-option" data-color="yellow" style="background: #fff475;"></button>
+                        <button class="color-option" data-color="green" style="background: #ccff90;"></button>
+                        <button class="color-option" data-color="blue" style="background: #a7ffeb;"></button>
+                        <button class="color-option" data-color="purple" style="background: #d7aefb;"></button>
+                    </div>
+                    <div class="note-actions">
+                        <button class="btn btn-secondary" id="closeNoteBtn">Kapat</button>
+                        <button class="btn btn-primary" id="saveNoteBtn">Kaydet</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notlar Grid -->
+            <div class="notes-grid" id="notesGrid">
+                <!-- Notlar buraya dinamik olarak eklenecek -->
+            </div>
+
+            <!-- Boş durum mesajı -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <span class="empty-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </span>
+                <h3>Henüz not yok</h3>
+                <p>Yukarıdaki alandan yeni not ekleyebilirsin</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Not Düzenleme Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Notu Düzenle</h3>
+                <button class="close-modal" id="closeModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" placeholder="Başlık" id="editNoteTitle">
+                <textarea placeholder="Not içeriği..." id="editNoteContent" rows="6"></textarea>
+                <div class="note-colors">
+                    <button class="color-option" data-color="default" style="background: var(--bg-primary);"></button>
+                    <button class="color-option" data-color="red" style="background: #f28b82;"></button>
+                    <button class="color-option" data-color="orange" style="background: #fbbc04;"></button>
+                    <button class="color-option" data-color="yellow" style="background: #fff475;"></button>
+                    <button class="color-option" data-color="green" style="background: #ccff90;"></button>
+                    <button class="color-option" data-color="blue" style="background: #a7ffeb;"></button>
+                    <button class="color-option" data-color="purple" style="background: #d7aefb;"></button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelEditBtn">İptal</button>
+                <button class="btn btn-primary" id="saveEditBtn">Kaydet</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="./theme.js"></script>
+    <script type="module" src="./notes.js"></script>
+</body>
+
+</html>
