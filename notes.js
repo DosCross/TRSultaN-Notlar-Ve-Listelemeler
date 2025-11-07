@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sidebar kontrolü
     setupSidebar();
     
+    // Bottom menu kontrolü
+    setupBottomMenu();
+    
     // Not input ayarları
     setupNoteInput();
     
@@ -25,10 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Modal ayarları
     setupModal();
-    
-    // Hash kontrolü (arşiv veya çöp kutusu)
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
     
     // Notları yükle
     loadNotes();
@@ -44,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function checkAuth() {
     const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
         return;
     }
 }
@@ -113,28 +112,47 @@ function setupSidebar() {
             });
         }
     }
+}
+
+// Bottom menu ayarları
+function setupBottomMenu() {
+    const menuToggle = document.getElementById('notesMenuToggle');
+    const menuContent = document.getElementById('notesMenuContent');
+    const bottomMenu = document.getElementById('notesBottomMenu');
     
-    // Menü öğelerine tıklama
-    const navItems = document.querySelectorAll('.nav-item[data-view]');
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            const view = this.dataset.view;
-            if (view) {
-                currentView = view;
-                updatePageTitle();
-                loadNotes();
-                
-                // Aktif sınıfı güncelle
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Sidebar'ı kapat
-                sidebar.classList.remove('open');
-                sidebarOverlay.classList.remove('show');
+    if (menuToggle && menuContent) {
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            bottomMenu.classList.toggle('open');
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!bottomMenu.contains(e.target)) {
+                bottomMenu.classList.remove('open');
             }
         });
-    });
+        
+        // Menü öğelerine tıklama
+        const menuItems = document.querySelectorAll('.bottom-menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const view = this.dataset.view;
+                if (view) {
+                    currentView = view;
+                    updatePageTitle();
+                    loadNotes();
+                    
+                    // Aktif sınıfı güncelle
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Menüyü kapat
+                    bottomMenu.classList.remove('open');
+                }
+            });
+        });
+    }
 }
 
 // Not input ayarları
@@ -333,13 +351,7 @@ function createNoteCard(note) {
                 <span class="note-date">${date}</span>
             </div>
             <div class="note-hover-menu">
-                <div class="note-menu-trigger">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="1"></circle>
-                        <circle cx="12" cy="5" r="1"></circle>
-                        <circle cx="12" cy="19" r="1"></circle>
-                    </svg>
-                </div>
+                <div class="note-menu-toggle">⋮</div>
                 <div class="note-menu-options">
                     ${menuButtons}
                 </div>
@@ -356,7 +368,7 @@ function attachNoteEvents() {
         card.addEventListener('click', function(e) {
             // Menü butonlarına veya menü tetikleyicisine tıklanmışsa kartı açma
             if (e.target.classList.contains('note-menu-btn') || 
-                e.target.classList.contains('note-menu-trigger') ||
+                e.target.classList.contains('note-menu-toggle') ||
                 e.target.closest('.note-hover-menu')) {
                 return;
             }
@@ -500,30 +512,6 @@ function updateNoteStatus(noteId, status) {
     }
 }
 
-// Hash değişikliğini işle
-function handleHashChange() {
-    const hash = window.location.hash.substring(1);
-    
-    if (hash === 'archive') {
-        currentView = 'archive';
-    } else if (hash === 'trash') {
-        currentView = 'trash';
-    } else {
-        currentView = 'notes';
-    }
-    
-    updatePageTitle();
-    loadNotes();
-    
-    // Sidebar'da aktif öğeyi güncelle
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.dataset.view === currentView || (currentView === 'notes' && item.getAttribute('href') === 'notes.html')) {
-            item.classList.add('active');
-        }
-    });
-}
-
 // Sayfa başlığını güncelle
 function updatePageTitle() {
     const pageTitle = document.getElementById('pageTitle');
@@ -542,6 +530,6 @@ function updatePageTitle() {
 function handleLogout() {
     if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
         localStorage.removeItem('currentUser');
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     }
 }
