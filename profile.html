@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>Profil Ayarları - Not Yönetim Sistemi</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>Not Yönetim Sistemi</h1>
+                <div class="user-info">
+                    <div class="user-profile">
+                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff&size=40" alt="Profil" class="avatar">
+                        <span id="userName">Kullanıcı</span>
+                    </div>
+                    <a href="dashboard.html" class="btn btn-secondary">← Ana Sayfa</a>
+                </div>
+            </div>
+        </header>
+        
+        <main class="dashboard-main">
+            <div class="profile-container">
+                <h2>Profil Ayarları</h2>
+                
+                <!-- Profil Fotoğrafı Bölümü -->
+                <div class="profile-section" id="avatar">
+                    <h3>Profil Fotoğrafı</h3>
+                    <div class="avatar-section">
+                        <img id="currentAvatar" src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff&size=120" alt="Profil" class="avatar-large">
+                        <div class="avatar-colors">
+                            <p>Renk seçin:</p>
+                            <div class="color-options">
+                                <button class="color-btn" data-color="667eea" style="background: #667eea;"></button>
+                                <button class="color-btn" data-color="f44336" style="background: #f44336;"></button>
+                                <button class="color-btn" data-color="4caf50" style="background: #4caf50;"></button>
+                                <button class="color-btn" data-color="ff9800" style="background: #ff9800;"></button>
+                                <button class="color-btn" data-color="9c27b0" style="background: #9c27b0;"></button>
+                                <button class="color-btn" data-color="00bcd4" style="background: #00bcd4;"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kullanıcı Adı Değiştirme -->
+                <div class="profile-section">
+                    <h3>Kullanıcı Adı Değiştir</h3>
+                    <form id="nameForm">
+                        <div class="form-group">
+                            <label for="newName">Yeni Kullanıcı Adı</label>
+                            <input type="text" id="newName" name="newName" required placeholder="Yeni adınızı girin">
+                        </div>
+                        <div id="nameMessage" class="message"></div>
+                        <button type="submit" class="btn btn-primary">Kullanıcı Adını Güncelle</button>
+                    </form>
+                </div>
+                
+                <!-- Şifre Değiştirme -->
+                <div class="profile-section" id="password">
+                    <h3>Şifre Değiştir</h3>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Mevcut Şifre</label>
+                            <input type="password" id="currentPassword" name="currentPassword" required placeholder="Mevcut şifreniz">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Yeni Şifre</label>
+                            <input type="password" id="newPassword" name="newPassword" required placeholder="En az 6 karakter">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmNewPassword">Yeni Şifre Tekrar</label>
+                            <input type="password" id="confirmNewPassword" name="confirmNewPassword" required placeholder="Yeni şifrenizi tekrar girin">
+                        </div>
+                        <div id="passwordMessage" class="message"></div>
+                        <button type="submit" class="btn btn-primary">Şifreyi Güncelle</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script type="module" src="./profile.js"></script>
+</body>
+
+</html>
