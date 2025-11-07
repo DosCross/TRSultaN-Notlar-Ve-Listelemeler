@@ -25,8 +25,8 @@ function checkAuth() {
     const currentUser = localStorage.getItem('currentUser');
     
     if (!currentUser) {
-        // Giriş yapılmamışsa login sayfasına yönlendir
-        window.location.href = 'index.html';
+        // Giriş yapılmamışsa ana sayfaya yönlendir
+        window.location.href = 'home.html';
         return;
     }
 }
@@ -113,7 +113,7 @@ function handleLogout() {
         // Mevcut kullanıcıyı temizle
         localStorage.removeItem('currentUser');
         
-        // Login sayfasına yönlendir
-        window.location.href = 'index.html';
+        // Ana sayfaya yönlendir
+        window.location.href = 'home.html';
     }
 }
